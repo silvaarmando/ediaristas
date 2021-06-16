@@ -1,6 +1,6 @@
 import {
   experimentalStyled as styled
-} from "@material-ui/core";
+} from "@material-ui/core/styles";
 import {
   AppBar
 } from '@material-ui/core';
