@@ -3,7 +3,7 @@ import {
 } from '@material-ui/core/styles';
 import {
   Container, Typography
-} from '@material-ui/core';
+} from '@material-ui/core';  
 
 export const FooterStyled = styled('footer')`
   background-color: ${
@@ -19,7 +19,7 @@ export const FooterStyled = styled('footer')`
           theme
             .palette
               .primary
-              .main
+                .main
         )
       };
   padding: ${
@@ -32,11 +32,15 @@ export const FooterStyled = styled('footer')`
 export const FooterContainer = styled(Container)`
   display: flex;
   justify-content: space-between;
-  gap: ${({ theme }) => theme.spacing(2)};
+  gap: ${({ theme }) => theme
+    .spacing(2)};
   flex-wrap: wrap;
-  ${({ theme }) => theme.breakpoints.down('md')} {
-    gap: ${({ theme }) => theme.spacing(5)}
-  }
+  ${({ theme }) => theme
+    .breakpoints
+      .down('md')} {
+    gap: ${({ theme }) => theme
+    .spacing(5)}
+  };
 `;
 
 export const FooterTitle = styled((props) => (
@@ -54,7 +58,8 @@ export const AppList = styled('ul')`
   list-style-type: none;
   padding: 0;
   gap: ${
-    ({ theme }) => theme.spacing()
+    ({ theme }) => theme
+      .spacing()
   };
 
   img {
