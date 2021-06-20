@@ -7,14 +7,27 @@ import {
   Button,
   Typography,
   Container,
+  CircularProgress,
 } from '@material-ui/core';
 import {
   FormElementContainer,
   ProfessionalsPaper,
   ProfessionalsContainer
 } from '@styles/pages/index.style';
+import useIndex from 'data/hooks/pages/useIndex.page';
 
 export default function Home() {
+  const {
+    cep,
+    setCep,
+    cepValid,
+    professionalsSearch,
+    error,
+    charwoman,
+    rightSearch,
+    waiting,
+    remainingDaily,
+  } = useIndex();
   return (
     <div>
       <SafeEnvironment />
@@ -26,56 +39,132 @@ export default function Home() {
       <Container>
         <FormElementContainer>
           <TextFieldMask
+            value={cep}
             variant={'outlined'}
             mask={'99.999-999'}
             label={'Digite seu CEP'}
             fullWidth
+            onChange={
+              (event) => setCep(
+                event
+                  .target
+                    .value)
+            }
           />
 
-          <Typography
-            color={'error'}
-          >
-            CEP inválido
-          </Typography>
+          {
+            error
+              &&
+            <Typography
+              color={'error'}
+            >
+              {error}
+            </Typography>
+          }
+
           <Button
             variant={'contained'}
             color={'secondary'}
             sx={
               { width: '220px' }
             }
+            disabled={
+              !cepValid
+                ||
+              waiting
+            }
+            onClick={
+              () => professionalsSearch(cep)
+            }
           >
-            Buscar
+            {
+              waiting
+                ?
+              <CircularProgress
+                size={20}
+              />
+                :
+              'Buscar'
+            }
           </Button>
         </FormElementContainer>
+        
+        {
+          rightSearch && (
+            charwoman.length > 0
+              ?
+            <ProfessionalsPaper>
+              <ProfessionalsContainer>
+                {
+                  charwoman.map((item) => {
+                    return (
+                      <UserInformation
+                        name={item.nome_completo}
+                        picture={item.foto_usuario}
+                        rating={item.reputacao}
+                        description={item.cidade}
+                      />
+                    )
+                  })
+                }
 
-        <ProfessionalsPaper>
-          <ProfessionalsContainer>
-            <UserInformation
-              name={'Armando Silva'}
-              picture={'https://github.com/franciscoarmando63.png'}
-              rating={4}
-              description={'Porto Belo'}
-            />
-            <UserInformation
-              name={'Armando Silva'}
-              picture={'https://github.com/franciscoarmando63.png'}
-              rating={4}
-              description={'Porto Belo'}
-            />
-            <UserInformation
-              name={'Armando Silva'}
-              picture={'https://github.com/franciscoarmando63.png'}
-              rating={4}
-              description={'Porto Belo'}
-            />
-            <UserInformation
-              name={'Armando Silva'}
-              picture={'https://github.com/franciscoarmando63.png'}
-              rating={4}
-              description={'Porto Belo'}
-            />
-          </ProfessionalsContainer>
-        </ProfessionalsPaper>
+              </ProfessionalsContainer>
+              <Container
+                sx={
+                  {
+                    textAlign: 'center'
+                  }
+                }
+              >
+                {
+                  remainingDaily > 0
+                    &&
+                  (
+                    <Typography
+                      sx={
+                        {
+                          mt: 5
+                        }
+                      }
+                    >
+                      ...e mais
+                      {remainingDaily}
+                      {' '}
+                        {remainingDaily > 1
+                          ? 'profissionais atendem'
+                          : 'profissional atende'
+                        }
+                      {' '}
+                      ao seu endereço.
+                    </Typography>
+                  )
+                }
+
+                <Button
+                  variant={'contained'}
+                  color={'secondary'}
+                  sx={
+                    {
+                      mt: 5
+                    }
+                  }
+                >
+                  Contratar um profissional
+                </Button>
+              </Container>
+            </ProfessionalsPaper>
+              :
+            (
+              <Typography
+                align={'center'}
+                color={'textPrimary'}
+              >
+                Ainda não temos nenhuma diarista disponível para sua região.
+              </Typography>
+            )
+          )
+        }
+        
       </Container>
     </div>
   )

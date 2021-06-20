@@ -11,11 +11,18 @@ export interface TextFieldMaskProps
   }
 
 const TextFieldMask: React.FC<TextFieldMaskProps> = (
-  { mask, ...props}
+  {
+    mask,
+    value,
+    onChange,
+    ...props
+  }
 ) => {
   return (
     <InputMask
       mask={mask}
+      value={value}
+      onChange={onChange}
     >
       {
         () => {
